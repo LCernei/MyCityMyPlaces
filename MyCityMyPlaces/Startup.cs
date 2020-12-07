@@ -17,8 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MyCityMyPlaces.Data;
-using Pomelo.EntityFrameworkCore.MySql;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 
 namespace MyCityMyPlaces
@@ -28,30 +26,16 @@ namespace MyCityMyPlaces
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ApplicationDbContext>(
-                dbContextOptions => dbContextOptions
-                    .UseMySql(
-                        // Replace with your connection string.
-                        "server=localhost;user=root;password=12345;database=bigdataproject",
-                        // Replace with your server version and type.
-                        // For common usages, see pull request #1233.
-                        new MySqlServerVersion(new Version(8, 0, 22)), // use MariaDbServerVersion for MariaDB
-                        mySqlOptions => mySqlOptions
-                            .CharSetBehavior(CharSetBehavior.NeverAppend))
-                    // Everything from this point on is optional but helps with debugging.
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors()
-                );
-           
-            
+            services.AddDbContextPool<ApplicationDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")));
+
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
 
@@ -62,8 +46,11 @@ namespace MyCityMyPlaces
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
-           services.AddRazorPages().AddRazorRuntimeCompilation()
+
+            services.AddRazorPages().AddRazorRuntimeCompilation()
                 .AddMicrosoftIdentityUI();
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +66,7 @@ namespace MyCityMyPlaces
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
