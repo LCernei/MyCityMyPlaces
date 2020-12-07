@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCityMyPlaces.Data;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyCityMyPlaces.Migrations
 {
@@ -13,20 +14,22 @@ namespace MyCityMyPlaces.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("MyCityMyPlaces.Models.Family", b =>
                 {
                     b.Property<int>("idFamily")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<int>("idRelatedMember")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("idUser")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("idFamily");
 
@@ -39,10 +42,11 @@ namespace MyCityMyPlaces.Migrations
                 {
                     b.Property<int>("idLocation")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("comment")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("coordinateX")
                         .HasColumnType("decimal(8,6)");
@@ -51,13 +55,13 @@ namespace MyCityMyPlaces.Migrations
                         .HasColumnType("decimal(8,6)");
 
                     b.Property<int>("idUser")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("locationName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<bool>("visible")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.HasKey("idLocation");
 
@@ -70,14 +74,15 @@ namespace MyCityMyPlaces.Migrations
                 {
                     b.Property<int>("idUser")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("mail")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("name")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.HasKey("idUser");
 

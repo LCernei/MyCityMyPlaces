@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyCityMyPlaces.Migrations
 {
@@ -11,10 +11,10 @@ namespace MyCityMyPlaces.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    idUser = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: true),
-                    mail = table.Column<string>(type: "longtext", nullable: false)
+                    idUser = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    mail = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,10 +25,10 @@ namespace MyCityMyPlaces.Migrations
                 name: "Family",
                 columns: table => new
                 {
-                    idFamily = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    idUser = table.Column<int>(type: "int", nullable: false),
-                    idRelatedMember = table.Column<int>(type: "int", nullable: false)
+                    idFamily = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    idUser = table.Column<int>(type: "integer", nullable: false),
+                    idRelatedMember = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,14 +45,14 @@ namespace MyCityMyPlaces.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    idLocation = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    idLocation = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     coordinateX = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     coordinateY = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
-                    comment = table.Column<string>(type: "longtext", nullable: true),
-                    locationName = table.Column<string>(type: "longtext", nullable: true),
-                    visible = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    idUser = table.Column<int>(type: "int", nullable: false)
+                    comment = table.Column<string>(type: "text", nullable: true),
+                    locationName = table.Column<string>(type: "text", nullable: true),
+                    visible = table.Column<bool>(type: "boolean", nullable: false),
+                    idUser = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
