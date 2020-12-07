@@ -8,11 +8,12 @@ namespace MyCityMyPlaces.Models
     public class Family
     {
         [Key]
-        public int idFamily { get; set; }
+        public int IdFamily { get; set; }
         
         [ForeignKey("User")]
-        public int idUser { get; set; }
-        public int idRelatedMember{ get; set; }
+        public int IdUser { get; set; }
+        [ForeignKey("User")]
+        public int IdRelatedMember{ get; set; }
         public User User { get; set; }
         
         

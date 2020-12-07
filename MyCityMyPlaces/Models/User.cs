@@ -14,11 +14,11 @@ namespace MyCityMyPlaces.Models
         }
 
         [Key] 
-        public int idUser { get; set; }
+        public int IdUser { get; set; }
         
-        public string name { get; set; }
+        public string Name { get; set; }
         [Required]  
-        public string mail { get; set; }
+        public string Mail { get; set; }
         
         public IList<Location> Locations{ get; set; }
         public IList<Family> Families{ get; set; }

@@ -5,16 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyCityMyPlaces.Interfaces;
 using MyCityMyPlaces.Models;
+
 namespace MyCityMyPlaces.Controllers
 {
-    public class MapController:Controller
+    public class MapController : Controller
 
     {
-        private readonly ILogger<MapController> _logger;
+        private readonly IUserRepository _userRepository;
+        private readonly IFamilyRepository _familyRepository;
+        private readonly ILocationRepository _locationRepository;
+        private readonly ILogger<FamilyController> _logger;
 
-        public MapController(ILogger<MapController> logger)
+        public MapController(IUserRepository userRepository,
+            IFamilyRepository familyRepository,
+            ILocationRepository locationRepository,
+            ILogger<FamilyController> logger)
         {
+            _userRepository = userRepository;
+            _familyRepository = familyRepository;
+            _locationRepository = locationRepository;
             _logger = logger;
         }
 
