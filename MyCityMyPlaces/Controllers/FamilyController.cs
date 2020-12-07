@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,33 +14,31 @@ using MyCityMyPlaces.Models;
 namespace MyCityMyPlaces.Controllers
 
 {
+    [Authorize]
     public class FamilyController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFamilyRepository _familyRepository;
         private readonly ILocationRepository _locationRepository;
         private readonly ILogger<FamilyController> _logger;
 
         public FamilyController(IUserRepository userRepository,
-            IFamilyRepository familyRepository,
             ILocationRepository locationRepository,
             ILogger<FamilyController> logger)
         {
             _userRepository = userRepository;
-            _familyRepository = familyRepository;
             _locationRepository = locationRepository;
             _logger = logger;
         }
-
-        public IActionResult AddFamilyMember()
+        
+        [HttpPost]
+        public IActionResult AddFamilyMember(FamilyViewModel model)
         {
-            //Example Insert
-            // _userRepository.Add(new User(){IdUser = 1, Mail = "a@a.a", Name = "a"});
-            //
-            // _userRepository.Add(new User(){IdUser = 2, Mail = "b@b.b", Name = "b"});
-            // List<User> asd = _userRepository.GetAll().ToList();
-            // _familyRepository.Add(new Family(){IdFamily = 1, IdUser = 1,IdRelatedMember = 2});
-            return Ok();
+            if (!ModelState.IsValid || User.Identity?.Name == null)
+                return RedirectToAction("Error");
+            
+            var currentEmail = User.Identity.Name;
+            _userRepository.AddRelationship(currentEmail, model.Email);
+            return RedirectToAction("Family");
         }
 
         public IActionResult Family()

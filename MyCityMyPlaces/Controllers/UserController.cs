@@ -8,17 +8,14 @@ namespace MyCityMyPlaces.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFamilyRepository _familyRepository;
         private readonly ILocationRepository _locationRepository;
-        private readonly ILogger<FamilyController> _logger;
+        private readonly ILogger<UserController> _logger;
 
         public UserController(IUserRepository userRepository,
-            IFamilyRepository familyRepository,
             ILocationRepository locationRepository,
-            ILogger<FamilyController> logger)
+            ILogger<UserController> logger)
         {
             _userRepository = userRepository;
-            _familyRepository = familyRepository;
             _locationRepository = locationRepository;
             _logger = logger;
         }

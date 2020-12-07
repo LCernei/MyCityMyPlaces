@@ -11,7 +11,6 @@ namespace MyCityMyPlaces.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Family> Families { get; set; }
         public DbSet<Location> Locations { get; set; }
     }
 }

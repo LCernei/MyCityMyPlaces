@@ -36,11 +36,11 @@ namespace MyCityMyPlaces
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")));
+                options.UseLazyLoadingProxies()
+                    .UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")));
             
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IFamilyRepository, FamilyRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
 
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)

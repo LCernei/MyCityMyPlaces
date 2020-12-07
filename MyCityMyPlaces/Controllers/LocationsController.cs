@@ -15,17 +15,14 @@ namespace MyCityMyPlaces.Controllers
     public class LocationsController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFamilyRepository _familyRepository;
         private readonly ILocationRepository _locationRepository;
-        private readonly ILogger<FamilyController> _logger;
+        private readonly ILogger<LocationsController> _logger;
 
         public LocationsController(IUserRepository userRepository,
-            IFamilyRepository familyRepository,
             ILocationRepository locationRepository,
-            ILogger<FamilyController> logger)
+            ILogger<LocationsController> logger)
         {
             _userRepository = userRepository;
-            _familyRepository = familyRepository;
             _locationRepository = locationRepository;
             _logger = logger;
         }

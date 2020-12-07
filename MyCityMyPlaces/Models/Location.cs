@@ -5,24 +5,22 @@ namespace MyCityMyPlaces.Models
 {
     public class Location
     {
-        [Key]
-        public int IdLocation { get; set; }
+        public int LocationId { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(8,6)")]
-        public decimal CoordinateX { get; set; }
-        [Required]  
-        [Column(TypeName = "decimal(8,6)")]
-        public decimal CoordinateY { get; set; }
-        
-        public string Comment { get; set; }
-        
-        public string LocationName { get; set; }
-        [Required] 
-        public bool Visible { get; set; } = false;
-        
-        [ForeignKey("User")]
-        public int IdUser { get; set; }
-        public User User { get; set; }
+        public decimal Long { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(8,6)")]
+        public decimal Lat { get; set; }
+
+        public string Comment { get; set; }
+        public string Name { get; set; }
+        [Required]
+        public bool Shared { get; set; } = false;
+
+        [Required]
+        public virtual User User { get; set; }
     }
 }
