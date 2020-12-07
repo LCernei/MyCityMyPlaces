@@ -8,19 +8,14 @@ namespace MyCityMyPlaces.Models
     [Table("User")]
     public class User
     {
-        public User()
-        {
-            Locations=new List<Location>();
-        }
-
-        [Key] 
-        public int IdUser { get; set; }
-        
+        [Key]
+        [EmailAddress]
+        public string Email { get; set; }
         public string Name { get; set; }
-        [Required]  
-        public string Mail { get; set; }
-        
-        public IList<Location> Locations{ get; set; }
-        public IList<Family> Families{ get; set; }
+
+        public virtual ICollection<Location> Locations { get; set; }
+        public virtual ICollection<User> FamilyRequestsIn { get; set; }
+        public virtual ICollection<User> FamilyRequestsOut { get; set; }
+
     }
 }

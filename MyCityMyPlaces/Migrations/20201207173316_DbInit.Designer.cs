@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyCityMyPlaces.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201207011705_DbInit")]
+    [Migration("20201207173316_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,103 +20,95 @@ namespace MyCityMyPlaces.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("MyCityMyPlaces.Models.Family", b =>
-                {
-                    b.Property<int>("idFamily")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("idRelatedMember")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("idUser")
-                        .HasColumnType("integer");
-
-                    b.HasKey("idFamily");
-
-                    b.HasIndex("idUser");
-
-                    b.ToTable("Family");
-                });
-
             modelBuilder.Entity("MyCityMyPlaces.Models.Location", b =>
                 {
-                    b.Property<int>("idLocation")
+                    b.Property<int>("LocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<string>("comment")
+                    b.Property<string>("Comment")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("coordinateX")
+                    b.Property<decimal>("Lat")
                         .HasColumnType("decimal(8,6)");
 
-                    b.Property<decimal>("coordinateY")
+                    b.Property<decimal>("Long")
                         .HasColumnType("decimal(8,6)");
 
-                    b.Property<int>("idUser")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("locationName")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<bool>("visible")
+                    b.Property<bool>("Shared")
                         .HasColumnType("boolean");
 
-                    b.HasKey("idLocation");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.HasIndex("idUser");
+                    b.HasKey("LocationId");
+
+                    b.HasIndex("UserEmail");
 
                     b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("MyCityMyPlaces.Models.User", b =>
                 {
-                    b.Property<int>("idUser")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<string>("mail")
-                        .IsRequired()
+                    b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.HasKey("idUser");
+                    b.HasKey("Email");
 
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("MyCityMyPlaces.Models.Family", b =>
+            modelBuilder.Entity("UserUser", b =>
                 {
-                    b.HasOne("MyCityMyPlaces.Models.User", "User")
-                        .WithMany("Families")
-                        .HasForeignKey("idUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("FamilyRequestsInEmail")
+                        .HasColumnType("text");
 
-                    b.Navigation("User");
+                    b.Property<string>("FamilyRequestsOutEmail")
+                        .HasColumnType("text");
+
+                    b.HasKey("FamilyRequestsInEmail", "FamilyRequestsOutEmail");
+
+                    b.HasIndex("FamilyRequestsOutEmail");
+
+                    b.ToTable("UserUser");
                 });
 
             modelBuilder.Entity("MyCityMyPlaces.Models.Location", b =>
                 {
                     b.HasOne("MyCityMyPlaces.Models.User", "User")
                         .WithMany("Locations")
-                        .HasForeignKey("idUser")
+                        .HasForeignKey("UserEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UserUser", b =>
+                {
+                    b.HasOne("MyCityMyPlaces.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("FamilyRequestsInEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyCityMyPlaces.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("FamilyRequestsOutEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MyCityMyPlaces.Models.User", b =>
                 {
-                    b.Navigation("Families");
-
                     b.Navigation("Locations");
                 });
 #pragma warning restore 612, 618

@@ -14,17 +14,14 @@ namespace MyCityMyPlaces.Controllers
 
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFamilyRepository _familyRepository;
         private readonly ILocationRepository _locationRepository;
-        private readonly ILogger<FamilyController> _logger;
+        private readonly ILogger<MapController> _logger;
 
         public MapController(IUserRepository userRepository,
-            IFamilyRepository familyRepository,
             ILocationRepository locationRepository,
-            ILogger<FamilyController> logger)
+            ILogger<MapController> logger)
         {
             _userRepository = userRepository;
-            _familyRepository = familyRepository;
             _locationRepository = locationRepository;
             _logger = logger;
         }
