@@ -33,6 +33,25 @@ namespace MyCityMyPlaces.Repositories
             var destinationUser = GetByEmail(destinationEmail);
             return AddRelationship(sourceUser, destinationUser);
         }
+        
+        public bool RemoveRelationship(User sourceUser, User destinationUser)
+        {
+            if (sourceUser == null || destinationUser == null || 
+                !sourceUser.FamilyRequestsOut.Contains(destinationUser) ||
+                !destinationUser.FamilyRequestsIn.Contains(sourceUser))
+                return false;
+            sourceUser.FamilyRequestsOut.Remove(destinationUser);
+            destinationUser.FamilyRequestsIn.Remove(sourceUser);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool RemoveRelationship(string sourceEmail, string destinationEmail)
+        {
+            var sourceUser = GetByEmail(sourceEmail);
+            var destinationUser = GetByEmail(destinationEmail);
+            return RemoveRelationship(sourceUser, destinationUser);
+        }
 
         public IEnumerable<User> GetFamily(User user)
         {

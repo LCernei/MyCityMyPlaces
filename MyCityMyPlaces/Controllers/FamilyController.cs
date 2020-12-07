@@ -41,9 +41,32 @@ namespace MyCityMyPlaces.Controllers
             return RedirectToAction("Family");
         }
 
+        public IActionResult Accept(string id)
+        {
+            if (User.Identity?.Name == null || string.IsNullOrEmpty(id))
+                return RedirectToAction("Error");
+            
+            var currentEmail = User.Identity.Name;
+            _userRepository.AddRelationship(currentEmail, id);
+            return RedirectToAction("Family");
+        }
+        
+        public IActionResult Cancel(string id)
+        {
+            if (User.Identity?.Name == null || string.IsNullOrEmpty(id))
+                return RedirectToAction("Error");
+            
+            var currentEmail = User.Identity.Name;
+            _userRepository.RemoveRelationship(currentEmail, id);
+            return RedirectToAction("Family");
+        }
+
         public IActionResult Family()
         {
-            return View();
+            if (User.Identity?.Name == null)
+                return RedirectToAction("Error");
+            
+            return View(_userRepository.GetByEmail(User.Identity.Name));
         }
 
         [AllowAnonymous]
