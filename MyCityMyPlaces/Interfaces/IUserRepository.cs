@@ -11,5 +11,7 @@ namespace MyCityMyPlaces.Interfaces
         public bool AddRelationship(string sourceEmail, string destinationEmail);
         public IEnumerable<User> GetFamily(User user);
         public IEnumerable<User> GetFamily(string email);
+        bool RemoveRelationship(User sourceUser, User destinationUser);
+        bool RemoveRelationship(string sourceEmail, string destinationEmail);
     }
 }
