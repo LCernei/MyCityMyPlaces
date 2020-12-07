@@ -17,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MyCityMyPlaces.Data;
+using MyCityMyPlaces.Interfaces;
+using MyCityMyPlaces.Repositories;
 
 
 namespace MyCityMyPlaces
@@ -35,6 +37,11 @@ namespace MyCityMyPlaces
         {
             services.AddDbContextPool<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")));
+            
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IFamilyRepository, FamilyRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
 
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));

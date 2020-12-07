@@ -7,22 +7,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyCityMyPlaces.Data;
+using MyCityMyPlaces.Interfaces;
 using MyCityMyPlaces.Models;
 
 namespace MyCityMyPlaces.Controllers
 {
-    public class LocationsController:Controller
+    public class LocationsController : Controller
     {
-        private readonly ILogger<LocationsController> _logger;
-        private readonly ApplicationDbContext _context;
-        public LocationsController(ILogger<LocationsController> logger)
+        private readonly IUserRepository _userRepository;
+        private readonly IFamilyRepository _familyRepository;
+        private readonly ILocationRepository _locationRepository;
+        private readonly ILogger<FamilyController> _logger;
+
+        public LocationsController(IUserRepository userRepository,
+            IFamilyRepository familyRepository,
+            ILocationRepository locationRepository,
+            ILogger<FamilyController> logger)
         {
+            _userRepository = userRepository;
+            _familyRepository = familyRepository;
+            _locationRepository = locationRepository;
             _logger = logger;
         }
-        public LocationsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+
         public IActionResult Locations()
         {
             return View();

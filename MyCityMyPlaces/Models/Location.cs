@@ -6,22 +6,22 @@ namespace MyCityMyPlaces.Models
     public class Location
     {
         [Key]
-        public int idLocation { get; set; }
+        public int IdLocation { get; set; }
         [Required]
         [Column(TypeName = "decimal(8,6)")]
-        public decimal coordinateX { get; set; }
+        public decimal CoordinateX { get; set; }
         [Required]  
         [Column(TypeName = "decimal(8,6)")]
-        public decimal coordinateY { get; set; }
+        public decimal CoordinateY { get; set; }
         
-        public string comment { get; set; }
+        public string Comment { get; set; }
         
-        public string locationName { get; set; }
+        public string LocationName { get; set; }
         [Required] 
-        public bool visible { get; set; } = false;
+        public bool Visible { get; set; } = false;
         
         [ForeignKey("User")]
-        public int idUser { get; set; }
+        public int IdUser { get; set; }
         public User User { get; set; }
 
     }
