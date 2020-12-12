@@ -7,6 +7,8 @@ namespace MyCityMyPlaces.Models
     {
         public int LocationId { get; set; }
 
+        public string TestField { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(8,6)")]
         public decimal Long { get; set; }
