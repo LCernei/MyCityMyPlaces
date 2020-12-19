@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyCityMyPlaces.Models
@@ -22,5 +23,24 @@ namespace MyCityMyPlaces.Models
 
         [Required]
         public virtual User User { get; set; }
+
+        public Location(decimal l, decimal lat, string comment, string name, bool shared, User user)
+        {
+            Long = l;
+            Lat = lat;
+            Comment = comment;
+            Name = name;
+            Shared = shared;
+            User = user;
+        }
+
+        public Location(decimal l, decimal lat, string name, bool shared, User user)
+        {
+            Long = l;
+            Lat = lat;
+            Name = name;
+            Shared = shared;
+            User = user;
+        }
     }
 }

@@ -53,6 +53,11 @@ namespace MyCityMyPlaces.Repositories
             return RemoveRelationship(sourceUser, destinationUser);
         }
 
+        public IEnumerable<Location> GetUserLocations(User user)
+        {
+            return user?.Locations;
+        }
+
         public IEnumerable<User> GetFamily(User user)
         {
             return user?.FamilyRequestsIn.Where(fri => user.FamilyRequestsOut.Contains(fri));
