@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +9,7 @@ namespace MyCityMyPlaces.Models
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
-        public decimal Long { get; set; }
+        public decimal Lon { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
@@ -24,23 +23,21 @@ namespace MyCityMyPlaces.Models
         [Required]
         public virtual User User { get; set; }
 
-        public Location(decimal l, decimal lat, string comment, string name, bool shared, User user)
+        public Location(decimal lon, decimal lat, string comment, string name, bool shared)
         {
-            Long = l;
+            Lon = lon;
             Lat = lat;
             Comment = comment;
             Name = name;
             Shared = shared;
-            User = user;
         }
 
-        public Location(decimal l, decimal lat, string name, bool shared, User user)
-        {
-            Long = l;
+        public Location(decimal lon, decimal lat, string name, bool shared)
+        { 
+            Lon = lon;
             Lat = lat;
             Name = name;
             Shared = shared;
-            User = user;
         }
     }
 }
