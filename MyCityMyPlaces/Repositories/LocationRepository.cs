@@ -12,32 +12,31 @@ namespace MyCityMyPlaces.Repositories
         { 
         }
 
-        public Location getLocation(decimal Long, decimal Lat, string email)
+        public Location GetLocation(decimal lon, decimal lat, string email)
         {
-            return _context.Locations.FirstOrDefault(l => l.Long == Long && l.Lat == Lat && l.User.Email == email.Trim().ToLower());
+            return _context.Locations.FirstOrDefault(l => l.Lon == lon && l.Lat == lat && l.User.Email == email.Trim().ToLower());
         }
 
-        public bool addLocation(decimal Long, decimal Lat, string Name, bool Shared, string email)
+        public bool AddLocation(decimal lon, decimal lat, string name, bool shared)
         {
-            User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
-            _context.Locations.Add(new Location(Long, Lat, Name, Shared, current));
+            // User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
+            _context.Locations.Add(new Location(lon, lat, name, shared));
             _context.SaveChanges();
             return true;
         }
         
-        public bool addLocation(decimal Long, decimal Lat,string Comment, string Name, bool Shared, string email)
+        public bool AddLocation(decimal lon, decimal lat,string comment, string name, bool shared)
         {
-            User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
-            _context.Locations.Add(new Location(Long, Lat, Comment, Name, Shared, current));
+            // User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
+            _context.Locations.Add(new Location(lon, lat, comment, name, shared));
             _context.SaveChanges();
             return true;
         }
         
 
-        public bool removeLocation(decimal Long, decimal Lat, string email)
+        public bool RemoveLocation(decimal lon, decimal lat, string email)
         {
-            User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
-            _context.Locations.Remove(getLocation(Long, Lat, email));
+            _context.Locations.Remove(GetLocation(lon, lat, email));
             _context.SaveChanges();
             return true;
         }
