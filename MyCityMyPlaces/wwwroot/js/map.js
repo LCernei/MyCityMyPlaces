@@ -16,7 +16,7 @@ function initMap() {
     map.addListener("click", (e) => {
         placeMarkerAndPanTo(e.latLng, map);
     });
-    infoWindow = new google.maps.InfoWindow();
+    var infoWindow = new google.maps.InfoWindow();
     const locationButton = document.createElement("button");
     locationButton.textContent = "Current Location";
     locationButton.classList.add("custom-map-control-button");
@@ -44,8 +44,6 @@ function initMap() {
             handleLocationError(false, infoWindow, map.getCenter());
         }
     });
-    var infoWindow = new google.maps.InfoWindow;
-  
 }
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
@@ -66,32 +64,38 @@ function placeMarkerAndPanTo(latLng, map) {
     });
     map.panTo(latLng);
 }
-function addLocation(){
-    let data = marker.getPosition();
-    new google.maps.Marker({
-        position: data,
-        map: map,
-    });
-    map.panTo(data);
+function changeText(){
+    var on = document.getElementById("shared").checked;
+    if(on!==true){
+        document.getElementById("cktxt").innerHTML="No";
+    }else{
+        document.getElementById("cktxt").innerText="Yes";
+    }
 }
-function addLoc(){
+function addLocation(){
     let longlat = marker.getPosition();
-    var obj = longlat.toJSON();
+    let obj = longlat.toJSON();
     document.getElementById("lon").value = obj.lng.toString();
     document.getElementById("lat").value = obj.lat.toString();
-    var on = documnet.getElementById("shared");
-    console.log(on.checked);
+    document.getElementById("shared").value = document.getElementById("shared").checked;
+    /*
+    new google.maps.Marker({
+        position: longlat,
+        map: map,
+    });
+    map.panTo(longlat);
+     */
 }
 
 function showLocations(){
 
 }
 $('#exampleModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('whatever') // Extract info from data-* attributes
+    let button = $(event.relatedTarget) // Button that triggered the modal
+    let recipient = button.data('whatever') // Extract info from data-* attributes
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
+    let modal = $(this)
     modal.find('.modal-title').text('My message ' + recipient)
     modal.find('.modal-body input').val(recipient)
 })
