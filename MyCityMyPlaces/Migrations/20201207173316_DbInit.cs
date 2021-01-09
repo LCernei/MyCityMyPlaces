@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyCityMyPlaces.Migrations
@@ -25,7 +25,7 @@ namespace MyCityMyPlaces.Migrations
                 {
                     LocationId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Long = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
+                    Lon = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     Lat = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
