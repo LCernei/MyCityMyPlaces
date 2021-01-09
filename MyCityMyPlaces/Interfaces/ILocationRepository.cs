@@ -6,8 +6,8 @@ namespace MyCityMyPlaces.Interfaces
 {
     public interface ILocationRepository : IGenericRepository<Location>
     {
-        public bool AddLocation(decimal lon, decimal lat, string name, bool shared);
-        public bool AddLocation(decimal lon, decimal lat, string comment, string name, bool shared);
+        public bool AddLocation(decimal lon, decimal lat, bool shared, string email);
+        public bool AddLocation(decimal lon, decimal lat, string comment, string name, bool shared, string email);
         public bool RemoveLocation(decimal lon, decimal lat, string email);
         public Location GetLocation(decimal lon, decimal lat, string email);
     }
