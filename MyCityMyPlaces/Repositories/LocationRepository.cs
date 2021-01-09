@@ -1,8 +1,8 @@
-using System.Collections;
 using MyCityMyPlaces.Data;
 using MyCityMyPlaces.Interfaces;
 using MyCityMyPlaces.Models;
 using System.Linq;
+
 
 namespace MyCityMyPlaces.Repositories
 {
@@ -14,25 +14,22 @@ namespace MyCityMyPlaces.Repositories
 
         public Location GetLocation(decimal lon, decimal lat, string email)
         {
-            return _context.Locations.FirstOrDefault(l => l.Lon == lon && l.Lat == lat && l.User.Email == email.Trim().ToLower());
+            return _context.Locations.FirstOrDefault(l => l.Lon == lon && l.Lat == lat && l.UserEmail == email.Trim().ToLower());
         }
 
-        public bool AddLocation(decimal lon, decimal lat, string name, bool shared)
+        public bool AddLocation(decimal lon, decimal lat, bool shared, string email)
         {
-            // User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
-            _context.Locations.Add(new Location(lon, lat, name, shared));
+            _context.Locations.Add(new Location(lon, lat, shared, email));
             _context.SaveChanges();
             return true;
         }
         
-        public bool AddLocation(decimal lon, decimal lat,string comment, string name, bool shared)
+        public bool AddLocation(decimal lon, decimal lat, string comment, string name, bool shared, string email)
         {
-            // User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
-            _context.Locations.Add(new Location(lon, lat, comment, name, shared));
+            _context.Locations.Add(new Location(lon, lat, comment, name, shared, email));
             _context.SaveChanges();
             return true;
-        }
-        
+       }
 
         public bool RemoveLocation(decimal lon, decimal lat, string email)
         {
