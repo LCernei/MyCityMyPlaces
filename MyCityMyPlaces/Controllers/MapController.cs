@@ -10,6 +10,7 @@ using MyCityMyPlaces.Models;
 
 namespace MyCityMyPlaces.Controllers
 {
+    [Authorize]
     public class MapController : Controller
 
     {
@@ -24,6 +25,26 @@ namespace MyCityMyPlaces.Controllers
             _userRepository = userRepository;
             _locationRepository = locationRepository;
             _logger = logger;
+        }
+
+        [HttpPost]
+        public IActionResult AddLocation(MapViewModel mapmodel)
+        {
+
+            if (!ModelState.IsValid || User.Identity?.Name == null)
+                return RedirectToAction("Error");
+            
+            var currentEmail = User.Identity.Name;
+
+            if (mapmodel.Comment != null && mapmodel.Name != null){
+                _locationRepository.AddLocation(mapmodel.Lon, mapmodel.Lat, mapmodel.Comment, mapmodel.Name,
+                    mapmodel.Shared, currentEmail);
+            }
+            else
+            {
+                _locationRepository.AddLocation(mapmodel.Lon, mapmodel.Lat, mapmodel.Shared, currentEmail);
+            }
+            return RedirectToAction("Map");
         }
 
         public IActionResult Map()
