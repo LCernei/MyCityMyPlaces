@@ -1,4 +1,4 @@
-let infoWindow, map, marker
+let map, marker
 // Initialize and add the map
 function initMap() {
     // The location of Romanian Palace of Parliament
@@ -44,8 +44,9 @@ function initMap() {
             handleLocationError(false, infoWindow, map.getCenter());
         }
     });
+    var infoWindow = new google.maps.InfoWindow;
+  
 }
-
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(
@@ -73,4 +74,24 @@ function addLocation(){
     });
     map.panTo(data);
 }
-function showLocations(){}
+function addLoc(){
+    let longlat = marker.getPosition();
+    var obj = longlat.toJSON();
+    document.getElementById("lon").value = obj.lng.toString();
+    document.getElementById("lat").value = obj.lat.toString();
+    var on = documnet.getElementById("shared");
+    console.log(on.checked);
+}
+
+function showLocations(){
+
+}
+$('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('My message ' + recipient)
+    modal.find('.modal-body input').val(recipient)
+})
