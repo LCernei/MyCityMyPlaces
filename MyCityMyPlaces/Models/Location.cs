@@ -21,7 +21,7 @@ namespace MyCityMyPlaces.Models
         public bool Shared { get; set; } = false;
 
         [Required]
-        public virtual User User { get; set; }
+        public string UserEmail { get; set; }
 
         public Location(decimal lon, decimal lat, string comment, string name, bool shared)
         {
@@ -31,13 +31,23 @@ namespace MyCityMyPlaces.Models
             Name = name;
             Shared = shared;
         }
+        public Location(decimal lon, decimal lat, string comment, string name, bool shared, string email)
+        {
+            Lon = lon;
+            Lat = lat;
+            Comment = comment;
+            Name = name;
+            Shared = shared;
+            UserEmail = email;
+        }
 
-        public Location(decimal lon, decimal lat, string name, bool shared)
+        public Location(decimal lon, decimal lat, bool shared, string email)
         { 
             Lon = lon;
             Lat = lat;
-            Name = name;
             Shared = shared;
+            UserEmail = email;
         }
+        
     }
 }
