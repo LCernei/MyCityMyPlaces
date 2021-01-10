@@ -8,7 +8,8 @@ namespace MyCityMyPlaces.Interfaces
     {
         public bool AddLocation(decimal lon, decimal lat, bool shared, string email);
         public bool AddLocation(decimal lon, decimal lat, string comment, string name, bool shared, string email);
-        public bool RemoveLocation(decimal lon, decimal lat, string email);
+        public bool RemoveLocation(int locationId);
         public Location GetLocation(decimal lon, decimal lat, string email);
+        public Location GetLocationById(int locationId);
     }
 }

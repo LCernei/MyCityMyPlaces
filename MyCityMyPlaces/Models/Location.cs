@@ -9,7 +9,7 @@ namespace MyCityMyPlaces.Models
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
-        public decimal Lon { get; set; }
+        public decimal Long { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
@@ -23,30 +23,38 @@ namespace MyCityMyPlaces.Models
         [Required]
         public string UserEmail { get; set; }
 
-        public Location(decimal lon, decimal lat, string comment, string name, bool shared)
+        public Location()
         {
-            Lon = lon;
-            Lat = lat;
-            Comment = comment;
-            Name = name;
-            Shared = shared;
+            this.Long = 0;
+            this.Lat = 0;
+            this.Shared = false;
         }
-        public Location(decimal lon, decimal lat, string comment, string name, bool shared, string email)
+        
+        public Location(decimal Long, decimal Lat, bool Shared, string UserEmail)
         {
-            Lon = lon;
-            Lat = lat;
-            Comment = comment;
-            Name = name;
-            Shared = shared;
-            UserEmail = email;
+            this.Long = Long;
+            this.Lat = Lat;
+            this.Shared = Shared;
+            this.UserEmail = UserEmail;
         }
-
-        public Location(decimal lon, decimal lat, bool shared, string email)
+        
+        public Location(decimal Long, decimal Lat, string Comment, string Name, bool Shared, string UserEmail)
+        {
+            this.Long = Long;
+            this.Lat = Lat;
+            this.Comment = Comment;
+            this.Name = Name;
+            this.Shared = Shared;
+            this.UserEmail = UserEmail;
+        }
+        
+        public Location(decimal Long, decimal Lat, string Name, bool Shared, string UserEmail)
         { 
-            Lon = lon;
-            Lat = lat;
-            Shared = shared;
-            UserEmail = email;
+            this.Long = Long;
+            this.Lat = Lat;
+            this.Name = Name;
+            this.Shared = Shared;
+            this.UserEmail = UserEmail;
         }
         
     }
