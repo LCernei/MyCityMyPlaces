@@ -14,12 +14,20 @@ namespace MyCityMyPlaces.Repositories
 
         public Location GetLocation(decimal lon, decimal lat, string email)
         {
-            return _context.Locations.FirstOrDefault(l => l.Lon == lon && l.Lat == lat && l.UserEmail == email.Trim().ToLower());
+            return _context.Locations.FirstOrDefault(l => l.Long == lon && l.Lat == lat && l.UserEmail == email.Trim().ToLower());
         }
 
+        public Location GetLocationById(int locationId)
+        {
+            return _context.Locations.FirstOrDefault(l => l.LocationId == locationId);
+        }
+        
         public bool AddLocation(decimal lon, decimal lat, bool shared, string email)
         {
-            _context.Locations.Add(new Location(lon, lat, shared, email));
+            User current = _context.Users.FirstOrDefault(u => u.Email == email.Trim().ToLower());
+            Location location = new Location(lon, lat, shared, email);
+            _context.Locations.Add(location);
+            current.Locations.Add(location);
             _context.SaveChanges();
             return true;
         }
@@ -31,9 +39,11 @@ namespace MyCityMyPlaces.Repositories
             return true;
        }
 
-        public bool RemoveLocation(decimal lon, decimal lat, string email)
+
+        public bool RemoveLocation(int locationId)
         {
-            _context.Locations.Remove(GetLocation(lon, lat, email));
+            Location location = GetLocationById(locationId);
+            _context.Locations.Remove(location);
             _context.SaveChanges();
             return true;
         }
