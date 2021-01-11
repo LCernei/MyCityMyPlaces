@@ -1,3 +1,4 @@
+using System;
 using MyCityMyPlaces.Data;
 using MyCityMyPlaces.Interfaces;
 using MyCityMyPlaces.Models;
@@ -38,6 +39,16 @@ namespace MyCityMyPlaces.Repositories
             _context.SaveChanges();
             return true;
        }
+
+        public bool EditLocation(int locationId, string comment, string name, bool shared)
+        {
+            Location location = GetLocationById(locationId);
+            location.Comment = comment;
+            location.Name = name;
+            location.Shared = shared;
+            _context.SaveChanges();
+            return true;
+        }
 
 
         public bool RemoveLocation(int locationId)

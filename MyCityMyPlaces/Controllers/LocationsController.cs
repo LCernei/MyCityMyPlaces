@@ -29,14 +29,29 @@ namespace MyCityMyPlaces.Controllers
         }
 
         [HttpPost]
+        [HttpGet]
         public IActionResult AddNewLocation(decimal lon, decimal lat, string comment, string name, string userEmail)
         {
             _locationRepository.AddLocation(lon, lat, comment, name, false, userEmail);
             return RedirectToAction("Locations");
         }
 
+        public IActionResult ChangeShared(int locationId, bool shared)
+        {
+            Location location = _locationRepository.GetLocationById(locationId);
+            _locationRepository.EditLocation(location.LocationId, location.Comment, location.Name, shared);
+            return RedirectToAction("Locations");
+        }
+
         [HttpPost]
-        public JsonResult ShowLocations()
+        public IActionResult EditLocation(LocationViewModel location)
+        {
+            _locationRepository.EditLocation(location.LocationId, location.Comment, location.Name, location.Shared);
+            return RedirectToAction("Locations");
+        }
+
+        [HttpPost]
+        public JsonResult ShowLocation(LocationViewModel location)
         {
             return Json(true);
         }

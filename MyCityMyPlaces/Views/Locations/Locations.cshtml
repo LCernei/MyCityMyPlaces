@@ -5,6 +5,32 @@
 }
 <head>
     <script src="~/js/locations.js"></script>
+    <link rel="stylesheet" href="~/css/locations.css" type="text/css">
+    <script type="text/javascript">
+        function editLocation(locationId) {
+            document.getElementById("locationId").value = locationId;
+            document.getElementById("shared").value = document.getElementById("shared").checked;
+        }
+
+        function changeText(){
+            var on = document.getElementById("shared").checked;
+            if(on!==true){
+                document.getElementById("cktxt").innerHTML="No";
+            }else{
+                document.getElementById("cktxt").innerText="Yes";
+            }
+        }
+
+        $('#editModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            let modal = $(this)
+            modal.find('.modal-title').text('My message ' + recipient)
+            modal.find('.modal-body input').val(recipient)
+        })
+    </script>
 </head>
 <body>
     <div class="text-center">
@@ -47,7 +73,17 @@
                     @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
                 </td>
                 <td>
-                    <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                    <div class="btn-group">
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="editLocation(@item.LocationId)" data-toggle="modal" data-target="#editModal">Edit</a></li>
+                            <li class="divider"></li>
+                            <li><a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a></li>
+                            <li class="divider"></li>
+                            <li><a asp-action="ChangeShared" asp-route-locationId="@item.LocationId" asp-route-shared=true>Add to Share</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         }
@@ -70,36 +106,143 @@
                     @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
                 </td>
                 <td>
-                    <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                    <div class="btn-group">
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a onclick="editLocation(@item.LocationId)" data-toggle="modal" data-target="#editModal">Edit</a></li>
+                            <li class="divider"></li>
+                            <li><a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a></li>
+                            <li class="divider"></li>
+                            <li><a asp-action="ChangeShared" asp-route-locationId="@item.LocationId" asp-route-shared=false>Remove from Share</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         }
         </tbody>
     </table>
+    <table>
+        <thead>
+        <tr>
+            <td>
+                <b>Family Members shared locations:</b>
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locations.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locations.First().Comment)
+            </th>
+            <th>
+                @Html.DisplayName("Coordinates")
+            </th>
+            <th>
+                @Html.DisplayName("Created by")
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var familyMember in Model.FamilyRequestsOut.Where(fro => Model.FamilyRequestsIn.Contains(fro)))
+            {
+                @foreach (var location in familyMember.Locations.Where(l => l.Shared))
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @Html.DisplayFor(modelItem => location.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => location.Comment)
+                        </td>
+                        <td>
+                            @Html.Raw(location.Lat.ToString() + ", " + location.Lon.ToString())
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => familyMember.Name)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a asp-action="AddNewLocation" asp-route-lon="@location.Lon"
+                                           asp-route-lat="@location.Lat" asp-route-name="@location.Name"
+                                           asp-route-comment="@location.Comment" asp-route-userEmail="@Model.Email">Add to myself</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 
     <div>
-     <button id="btnExportToCsv" type="button" class="btn btn-primary margin">Export to CSV</button>
+        <button id="btnExportToCsv" type="button" class="btn btn-primary margin">Export to CSV</button>
     </div>
     <script>
-            const dataTable = document.getElementById("dataTable");
-            const btnExportToCsv = document.getElementById("btnExportToCsv");
-    
-            btnExportToCsv.addEventListener("click", () => {
-                const exporter = new TableCSVExporter(dataTable);
-                const csvOutput = exporter.convertToCSV();
-                const csvBlob = new Blob([csvOutput], { type: "text/csv" });
-                const blobUrl = URL.createObjectURL(csvBlob);
-                const anchorElement = document.createElement("a");
-    
-                anchorElement.href = blobUrl;
-                anchorElement.download = "table-export.csv";
-                anchorElement.click();
-    
-                setTimeout(() => {
-                    URL.revokeObjectURL(blobUrl);
-                }, 500);
-            });
-        </script>
+        const dataTable = document.getElementById("dataTable");
+        const btnExportToCsv = document.getElementById("btnExportToCsv");
+
+        btnExportToCsv.addEventListener("click", () => {
+            const exporter = new TableCSVExporter(dataTable);
+            const csvOutput = exporter.convertToCSV();
+            const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+            const blobUrl = URL.createObjectURL(csvBlob);
+            const anchorElement = document.createElement("a");
+
+            anchorElement.href = blobUrl;
+            anchorElement.download = "table-export.csv";
+            anchorElement.click();
+
+            setTimeout(() => {
+                URL.revokeObjectURL(blobUrl);
+            }, 500);
+        });
+    </script>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Edit Location</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="EditLocation" method="post">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" name="LocationId" id="locationId">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Name</label>
+                            <input type="text" class="form-control" name="Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Comment</label>
+                            <input type="text" class="form-control" name="Comment">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Share this location with Family?</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" onclick="changeText()" type="checkbox" id="shared" name="Shared">
+                            <label class="form-check-label" for="shared" id="cktxt">No</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit location</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 
