@@ -53,11 +53,6 @@ namespace MyCityMyPlaces.Repositories
             return RemoveRelationship(sourceUser, destinationUser);
         }
 
-        public IEnumerable<Location> GetUserLocations(User user)
-        {
-            return user?.Locations;
-        }
-
         public IEnumerable<User> GetFamily(User user)
         {
             return user?.FamilyRequestsIn.Where(fri => user.FamilyRequestsOut.Contains(fri));
@@ -66,6 +61,12 @@ namespace MyCityMyPlaces.Repositories
         public IEnumerable<User> GetFamily(string email)
         {
             return GetFamily(GetByEmail(email));
+        }
+
+        public IEnumerable<Location> GetUserLocations(string email)
+        {
+            var current = GetByEmail(email);
+            return current.Locations;
         }
     }
 }

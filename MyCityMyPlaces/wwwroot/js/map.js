@@ -1,6 +1,7 @@
 let map, marker
 // Initialize and add the map
 function initMap() {
+
     // The location of Romanian Palace of Parliament
     const parliament = { lat: 44.4232, lng: 26.0858 };
     // The map, centered at Parliament
@@ -13,6 +14,24 @@ function initMap() {
     position: parliament,
     map: map,
     });
+    let locs = document.getElementById("locations").innerText;
+    if(locs.length>0){
+        var locArr = locs.split(";");
+        locArr.forEach(getCoord);
+        function getCoord(item){
+            var coord = item.split(",");
+            if(coord.length>1){
+                const place = { lat: parseFloat(coord[0]), lng: parseFloat(coord[1]) };
+                new google.maps.Marker({
+                    position: place,
+                    map: map,
+                });
+                map.panTo(place);
+                console.log(place);
+            }
+
+        }
+    }
     map.addListener("click", (e) => {
         placeMarkerAndPanTo(e.latLng, map);
     });
@@ -87,9 +106,6 @@ function addLocation(){
      */
 }
 
-function showLocations(){
-
-}
 $('#exampleModal').on('show.bs.modal', function (event) {
     let button = $(event.relatedTarget) // Button that triggered the modal
     let recipient = button.data('whatever') // Extract info from data-* attributes

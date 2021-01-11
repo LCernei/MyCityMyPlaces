@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -47,6 +44,22 @@ namespace MyCityMyPlaces.Controllers
             return RedirectToAction("Map");
         }
 
+        [HttpGet]
+        public IActionResult GetLocations(MapViewModel mapmodel)
+        {
+            if (!ModelState.IsValid || User.Identity?.Name == null)
+                return RedirectToAction("Error");
+            
+            var currentEmail = User.Identity.Name;
+            var Locs = _userRepository.GetUserLocations(currentEmail);
+            var data = "";
+            foreach (var loc in Locs)
+            {
+                data += loc.Lat + "," + loc.Lon + ";";
+            }
+            TempData["coord"] = data;
+            return RedirectToAction("Map");
+        }
         public IActionResult Map()
         {
             return View();
