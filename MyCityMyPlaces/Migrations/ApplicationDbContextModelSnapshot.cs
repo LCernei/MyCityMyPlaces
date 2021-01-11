@@ -31,7 +31,7 @@ namespace MyCityMyPlaces.Migrations
                     b.Property<decimal>("Lat")
                         .HasColumnType("decimal(8,6)");
 
-                    b.Property<decimal>("Long")
+                    b.Property<decimal>("Lon")
                         .HasColumnType("decimal(8,6)");
 
                     b.Property<string>("Name")

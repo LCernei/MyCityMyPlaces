@@ -9,7 +9,7 @@ namespace MyCityMyPlaces.Models
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
-        public decimal Long { get; set; }
+        public decimal Lon { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(8,6)")]
@@ -25,36 +25,36 @@ namespace MyCityMyPlaces.Models
 
         public Location()
         {
-            this.Long = 0;
-            this.Lat = 0;
-            this.Shared = false;
+            Lon = 0;
+            Lat = 0;
+            Shared = false;
         }
         
-        public Location(decimal Long, decimal Lat, bool Shared, string UserEmail)
+        public Location(decimal lon, decimal lat, bool shared, string userEmail)
         {
-            this.Long = Long;
-            this.Lat = Lat;
-            this.Shared = Shared;
-            this.UserEmail = UserEmail;
+            Lon = lon;
+            Lat = lat;
+            Shared = shared;
+            UserEmail = userEmail;
         }
         
-        public Location(decimal Long, decimal Lat, string Comment, string Name, bool Shared, string UserEmail)
+        public Location(decimal lon, decimal lat, string comment, string name, bool shared, string userEmail)
         {
-            this.Long = Long;
-            this.Lat = Lat;
-            this.Comment = Comment;
-            this.Name = Name;
-            this.Shared = Shared;
-            this.UserEmail = UserEmail;
+            Lon = lon;
+            Lat = lat;
+            Comment = comment;
+            Name = name;
+            Shared = shared;
+            UserEmail = userEmail;
         }
         
-        public Location(decimal Long, decimal Lat, string Name, bool Shared, string UserEmail)
+        public Location(decimal lon, decimal lat, string name, bool shared, string userEmail)
         { 
-            this.Long = Long;
-            this.Lat = Lat;
-            this.Name = Name;
-            this.Shared = Shared;
-            this.UserEmail = UserEmail;
+            Lon = lon;
+            Lat = lat;
+            Name = name;
+            Shared = shared;
+            UserEmail = userEmail;
         }
         
     }

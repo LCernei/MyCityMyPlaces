@@ -14,7 +14,7 @@ namespace MyCityMyPlaces.Repositories
 
         public Location GetLocation(decimal lon, decimal lat, string email)
         {
-            return _context.Locations.FirstOrDefault(l => l.Long == lon && l.Lat == lat && l.UserEmail == email.Trim().ToLower());
+            return _context.Locations.FirstOrDefault(l => l.Lon == lon && l.Lat == lat && l.UserEmail == email.Trim().ToLower());
         }
 
         public Location GetLocationById(int locationId)

@@ -42,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                @Html.Raw(item.Lat.ToString() + ", " + item.Long.ToString())
+                @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
             </td>
             <td>
                 <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
@@ -65,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                @Html.Raw(item.Lat.ToString() + ", " + item.Long.ToString())
+                @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
             </td>
             <td>
                 <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
