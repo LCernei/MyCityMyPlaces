@@ -1,76 +1,105 @@
 @model User
 
-
 @{
     ViewData["Title"] = "Locations";
 }
+<head>
+    <script src="~/js/locations.js"></script>
+</head>
+<body>
+    <div class="text-center">
+        <p>Favourite locations</p>
+    </div>
 
-<div class="text-center">
-    <p>Favourite locations</p>
-</div>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th></th>
-        <th>
-            @Html.DisplayNameFor(model => model.Locations.First().Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Locations.First().Comment)
-        </th>
-        <th>
-            @Html.DisplayName("Coordinates")
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <b>Private locations:</b>
-        </td>
-    </tr>
-    @foreach (var item in Model.Locations.Where(loc => !loc.Shared))
-    {
+    <table id="dataTable" class="table" >
+        <thead>
         <tr>
-            <td></td>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locations.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locations.First().Comment)
+            </th>
+            <th>
+                @Html.DisplayName("Coordinates")
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
-            </td>
-            <td>
-                <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                <b>Private locations:</b>
             </td>
         </tr>
-    }
-    <tr>
-        <td>
-            <b>Shared locations:</b>
-        </td>
-    </tr>
-    @foreach (var item in Model.Locations.Where(loc => loc.Shared))
-    {
+        @foreach (var item in Model.Locations.Where(loc => !loc.Shared))
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
+                </td>
+                <td>
+                    <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                </td>
+            </tr>
+        }
         <tr>
-            <td></td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
-            </td>
-            <td>
-                <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                <b>Shared locations:</b>
             </td>
         </tr>
-    }
-    </tbody>
-</table>
+        @foreach (var item in Model.Locations.Where(loc => loc.Shared))
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.Raw(item.Lat.ToString() + ", " + item.Lon.ToString())
+                </td>
+                <td>
+                    <a asp-action="RemoveLocation" asp-route-locationId="@item.LocationId">Remove</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div>
+     <button id="btnExportToCsv" type="button" class="btn btn-primary margin">Export to CSV</button>
+    </div>
+    <script>
+            const dataTable = document.getElementById("dataTable");
+            const btnExportToCsv = document.getElementById("btnExportToCsv");
+    
+            btnExportToCsv.addEventListener("click", () => {
+                const exporter = new TableCSVExporter(dataTable);
+                const csvOutput = exporter.convertToCSV();
+                const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+                const blobUrl = URL.createObjectURL(csvBlob);
+                const anchorElement = document.createElement("a");
+    
+                anchorElement.href = blobUrl;
+                anchorElement.download = "table-export.csv";
+                anchorElement.click();
+    
+                setTimeout(() => {
+                    URL.revokeObjectURL(blobUrl);
+                }, 500);
+            });
+        </script>
+</body>
+
+
