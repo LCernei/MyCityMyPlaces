@@ -1,0 +1,111 @@
+﻿@model StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<head>
+    <style type="text/css">
+        td, th {
+            padding: 10px;
+            position: relative;
+            text-align: center;
+        }
+        
+        body:not(.nohover) tbody tr:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .first_column {
+            border-right: solid 1px gray;
+            text-align: left;
+        }
+    </style>
+    <script type="text/javascript">
+        function getCommonLocation(familyMember) {
+            var nrOfLocations = 0;
+            for (var memLoc in familyMember.Locations)
+            {
+                for (var loc in Model.CurrentUser.Locations)
+                {
+                    if (memLoc.Lon == loc.Lon && memLoc.Lat == loc.Lat)
+                    {
+                        nrOfLocations++;
+                    }
+                }
+            }
+            return nrOfLocations;
+        }
+    </script>
+</head>
+
+<div class="text-center">
+    <p>Statistics</p>
+</div>
+
+<div class="subText">
+    <h5>Your statistics:</h5>
+</div>
+
+<table>
+    <tbody>
+    <tr>
+        <td class="first_column">Number of private locations</td>
+        <td>
+            @Html.Raw(Model.CurrentUser.Locations.Where(l => !l.Shared).Count().ToString())
+        </td>
+    </tr>
+    <tr>
+        <td class="first_column">Number of shared locations</td>
+        <td>
+            @Html.Raw(Model.CurrentUser.Locations.Where(l => l.Shared).Count().ToString())
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="subText">
+    <p></p>
+    <h5>Family statistics:</h5>
+</div>
+<table>
+    <thead>
+    <tr>
+        <td></td>
+        <td class="first_column"></td>
+        <td>
+            @Html.DisplayName("Number of private locations")
+        </td>
+        <td>
+            @Html.DisplayName("Number of shared locations")
+        </td>
+        <td>
+            @Html.DisplayName("Number of locations you have in common")
+        </td>
+    </tr>
+    </thead>
+    @foreach (var item in Model.CurrentUser.FamilyRequestsOut.Where(fro => Model.CurrentUser.FamilyRequestsIn.Contains(fro)))
+    {
+        <tr>
+            <td></td>
+            <td class="first_column">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.Raw(item.Locations.Where(l => !l.Shared).Count())
+            </td>
+            <td>
+                @Html.Raw(item.Locations.Where(l => l.Shared).Count())
+            </td>
+            <td>
+                @{
+                    var nrOfLocations = item.Locations.Sum(
+                        memLoc => Model.CurrentUser.Locations.Count(
+                            loc => loc.Lon == memLoc.Lon && loc.Lat == memLoc.Lat &&
+                                   loc.LocationId != memLoc.LocationId));
+                    @Html.Raw(nrOfLocations);
+                }
+            </td>
+        </tr>
+    }
+</table>
