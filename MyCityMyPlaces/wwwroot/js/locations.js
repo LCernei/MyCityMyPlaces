@@ -10,7 +10,7 @@
 
     convertToCSV () {
         const lines = [];
-        const numCols = this._findLongestRowLength();
+        const numCols = this._findLongestRowLength()-1;
 
         for (const row of this.rows) {
             let line = "";
